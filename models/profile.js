@@ -8,5 +8,11 @@ const Profile = db.define("profile", {
     },
     UserId: {
         type: DataTypes.INTEGER,
+    },
+    profilePic: {
+        type: DataTypes.TEXT,
+        allowNull: true
     }
 })
+
+module.exports = Profile;
