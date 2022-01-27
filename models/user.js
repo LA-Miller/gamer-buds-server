@@ -20,6 +20,14 @@ const User = db.define("user", {
         type: DataTypes.BOOLEAN,
         allowNull: false,
     },
+    profilePic: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    discord: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+    },   
 });
 
 module.exports = User;

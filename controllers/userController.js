@@ -4,6 +4,7 @@ const { UniqueConstraintError } = require("sequelize/lib/errors");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const res = require("express/lib/response");
 
 // User register endpoint
 router.post("/register", async (req, res) => {
@@ -82,5 +83,29 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+// GETTING ALL THE USER INFO\
+router.get('/userinfo', async(req, res) => {
+  try {
+    await models.UserModel.findAll({
+      include: [
+        {
+          model: models.PostsModel,
+        }
+      ]
+    })
+    .then(
+      users => {
+        res.status(200).json({
+          users: users
+        });
+      }
+    )
+  } catch(err) {
+    res.status(500).json({
+      error: `Failed to retrieve users: ${err}`
+    })
+  }
+})
 
 module.exports = router;
