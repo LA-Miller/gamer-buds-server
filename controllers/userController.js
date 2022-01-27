@@ -5,17 +5,18 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const res = require("express/lib/response");
+const validateJWT = require("../middleware/validate-jwt");
 
 // User register endpoint
 router.post("/register", async (req, res) => {
-  let { username, email, password } = req.body?.user;
+  let { username, email, password, isAdmin } = req.body?.user;
 
   try {
     const User = await models.UserModel.create({
       username,
       email,
       password: bcrypt.hashSync(password, 13),
-      isAdmin: false,
+      isAdmin,
     });
 
     let token = jwt.sign({ id: User.id }, process.env.JWT_SECRET, {
@@ -133,6 +134,28 @@ router.get('/:id', async(req, res) => {
     res.status(500).json({
       error: `Failed to retrieve user`
     })
+  }
+})
+
+//ADMIN DELETING A USER
+router.delete('/:id', validateJWT, async(req, res) => {
+  const isAdmin = req.user.isAdmin;
+  const userId = req.params.id;
+
+  if(isAdmin) {
+    try {
+      const query = {
+        where: {
+          id: userId
+        },
+      };
+      await models.UserModel.destroy(query);
+      res.status(200).json({ message: "User removed" });
+    } catch(err) {
+      res.status(500).json({ error: err });
+    }
+  } else {
+    res.status(200).json({ message: "Not an Admin" });
   }
 })
 
