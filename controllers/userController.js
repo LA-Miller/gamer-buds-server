@@ -84,7 +84,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// GETTING ALL THE USER INFO\
+// GETTING ALL THE USER INFO
 router.get('/userinfo', async(req, res) => {
   try {
     await models.UserModel.findAll({
@@ -104,6 +104,34 @@ router.get('/userinfo', async(req, res) => {
   } catch(err) {
     res.status(500).json({
       error: `Failed to retrieve users: ${err}`
+    })
+  }
+})
+
+// GETTING A SINGLE USERS INFO BY ID
+router.get('/:id', async(req, res) => {
+  let { id } = req.params;
+  try {
+    await models.UserModel.findAll({
+      where: {
+        id: id
+      },
+      include: [
+        {
+          model: models.PostsModel
+        }
+      ]
+    })
+    .then(
+      user => {
+        res.status(200).json({
+          user: user
+        });
+      }
+    )
+  } catch(err) {
+    res.status(500).json({
+      error: `Failed to retrieve user`
     })
   }
 })
