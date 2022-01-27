@@ -2,10 +2,8 @@ const db = require('../db');
 
 const UserModel = require("./user");
 const PostsModel = require('./posts');
-const ProfileModel = require('./profile');
 
 UserModel.hasMany(PostsModel);
-UserModel.hasOne(ProfileModel);
 PostsModel.belongsTo(UserModel);
 
 module.exports = {
@@ -13,6 +11,5 @@ module.exports = {
     models: {
         UserModel,
         PostsModel,
-        ProfileModel
     }
 };
