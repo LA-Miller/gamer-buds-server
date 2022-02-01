@@ -137,7 +137,7 @@ router.get('/:id', async(req, res) => {
   }
 })
 
-//ADMIN DELETING A USER
+//ADMIN DELETING A USER -- ALSO DELETES ALL OF THE USER'S POSTS
 router.delete('/:id', validateJWT, async(req, res) => {
   const isAdmin = req.user.isAdmin;
   const userId = req.params.id;
