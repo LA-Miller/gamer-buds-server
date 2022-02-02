@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
 });
 
 // GETTING ALL THE USER INFO
-router.get('/userinfo', async(req, res) => {
+router.get('/userinfo', validateJWT, async(req, res) => {
   try {
     await models.UserModel.findAll({
       include: [
@@ -110,7 +110,7 @@ router.get('/userinfo', async(req, res) => {
 })
 
 // GETTING A SINGLE USERS INFO BY ID
-router.get('/:id', async(req, res) => {
+router.get('/:id', validateJWT, async(req, res) => {
   let { id } = req.params;
   try {
     await models.UserModel.findAll({
