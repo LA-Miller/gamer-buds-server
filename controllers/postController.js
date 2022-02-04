@@ -28,7 +28,7 @@ router.post('/create', validateJWT, async(req, res) => {
 })
 
 // GET ALL POSTS
-router.get('/', validateJWT, async( req, res ) => {
+router.get('/', async( req, res ) => {
     try {
         const userPosts = await models.PostsModel.findAll();
         res.status(200).json(userPosts);
