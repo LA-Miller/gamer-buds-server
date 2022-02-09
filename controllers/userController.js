@@ -11,17 +11,12 @@ const validateJWT = require("../middleware/validate-jwt");
 router.post("/register", async (req, res) => {
   let { username, email, password, isAdmin } = req.body?.user;
 
-  const isAdminCheck = boolean;
-  if(isAdmin === false || isAdmin === null) {
-    isAdminCheck === false;
-  }
-  
   try {
     const User = await models.UserModel.create({
       username,
       email,
       password: bcrypt.hashSync(password, 13),
-      isAdmin: isAdminCheck,
+      isAdmin,
     });
 
     let token = jwt.sign({ id: User.id }, process.env.JWT_SECRET, {
