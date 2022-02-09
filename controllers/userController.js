@@ -9,14 +9,13 @@ const validateJWT = require("../middleware/validate-jwt");
 
 // User register endpoint
 router.post("/register", async (req, res) => {
-  let { username, email, password, isAdmin } = req.body?.user;
+  let { username, email, password } = req.body?.user;
 
   try {
     const User = await models.UserModel.create({
       username,
       email,
       password: bcrypt.hashSync(password, 13),
-      isAdmin,
     });
 
     let token = jwt.sign({ id: User.id }, process.env.JWT_SECRET, {
