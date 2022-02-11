@@ -10,6 +10,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 
 // Something has been changed
 // Something else has been changed
+// why is this happening
   },
 });
 
