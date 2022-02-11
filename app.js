@@ -8,6 +8,8 @@ app.use(require("./middleware/headers"))
 
 app.use(Express.json());
 
+app.use(cors());
+
 app.use("/user", controllers.userController);
 app.use("/post", controllers.postController);
 
