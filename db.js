@@ -8,9 +8,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       rejectUnauthorized: false,
     },
 
-// Something has been changed
-// Something else has been changed
-// why is this happening
+    // Something has been changed
+    // Something else has been changed
+    // why is this happening
   },
 });
 
