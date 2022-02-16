@@ -13,6 +13,7 @@ app.use("/post", controllers.postController);
 
 app.use(require("./middleware/validate-jwt"));
 
+// Changes made
 dbConnection.authenticate()
     .then(() => dbConnection.sync())
     .then(() => {
