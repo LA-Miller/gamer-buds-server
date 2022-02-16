@@ -12,6 +12,10 @@ const Posts = db.define("post", {
     },
     userId: {
         type: DataTypes.INTEGER,
+    },
+    username: {
+        type: DataTypes.STRING(100),
+        allowNull: false
     }
 })
 
