@@ -10,6 +10,7 @@ router.post('/create', validateJWT, async(req, res) => {
         await models.PostsModel.create({
             game: game,
             content: content,
+            username: req.user.username,
             userId: req.user.id
         })
         .then(
