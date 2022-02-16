@@ -6,6 +6,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const res = require("express/lib/response");
 const validateJWT = require("../middleware/validate-jwt");
+const { FavGameModel } = models;
+
+// router.get('/test', validateJWT, async(req,res) => {
+//  const result= await User.findAll({
+//     include: [FavGameModel]
+//   })
+//   res.status(200).json(result);
+// })
 
 // User register endpoint
 router.post("/register", async (req, res) => {

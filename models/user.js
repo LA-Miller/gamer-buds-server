@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const sequelize = require("../db");
 const db = require("../db");
 
 const User = db.define("user", {
@@ -27,7 +28,8 @@ const User = db.define("user", {
     discord: {
         type: DataTypes.STRING(100),
         allowNull: true,
-    },   
+    },  
+   
 });
 
 module.exports = User;

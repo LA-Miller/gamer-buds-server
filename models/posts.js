@@ -16,7 +16,8 @@ const Posts = db.define("post", {
     username: {
         type: DataTypes.STRING(100),
         allowNull: false
-    }
+    },
+    
 })
 
 module.exports = Posts;
