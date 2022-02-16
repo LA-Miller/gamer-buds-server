@@ -16,7 +16,7 @@ app.use(require("./middleware/validate-jwt"));
 
 // Changes made
 dbConnection.authenticate()
-    .then(() => dbConnection.sync({ force: true }))
+    .then(() => dbConnection.sync())
     .then(() => {
         app.listen(process.env.PORT, () => {
             console.log(`[Server]: App is listening on ${process.env.PORT}.`);
