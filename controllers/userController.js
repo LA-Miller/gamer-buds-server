@@ -9,7 +9,7 @@ const validateJWT = require("../middleware/validate-jwt");
 
 // User register endpoint
 router.post("/register", async (req, res) => {
-  let { username, email, password, isAdmin } = req.body?.user;
+  let { username, email, password, isAdmin, discord } = req.body?.user;
 
   try {
     const User = await models.UserModel.create({
@@ -17,6 +17,7 @@ router.post("/register", async (req, res) => {
       email,
       password: bcrypt.hashSync(password, 13),
       isAdmin,
+      discord,
     });
 
     let token = jwt.sign({ id: User.id }, process.env.JWT_SECRET, {
@@ -84,6 +85,31 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+// UPDATING USER PROFILE
+router.put('/update/profile/:userId', validateJWT, async(req, res) => {
+  const { username, discord, email, password } = req.body.user;
+
+  const query = {
+    where: {
+      id: req.user.id
+    }
+  }
+
+  const updateProfile = {
+    username: username,
+    discord: discord,
+    email: email,
+    password: password
+  }
+
+  try {
+    const update = await models.UserModel.update(updateProfile, query);
+    res.status(200).json(update);
+  } catch(err) {
+    res.status(500).json({ error: err });
+  }
+})
 
 // GETTING ALL THE USER INFO
 router.get('/userinfo', validateJWT, async(req, res) => {
