@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const res = require("express/lib/response");
 const validateJWT = require("../middleware/validate-jwt");
 const { FavGameModel } = models;
+const {  PostsModel } = models;
 
 // router.get('/test', validateJWT, async(req,res) => {
 //  const result= await User.findAll({

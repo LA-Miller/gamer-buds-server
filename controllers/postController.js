@@ -2,6 +2,8 @@ const router = require("express").Router();
 const { models } = require("../models");
 const validateJWT = require("../middleware/validate-jwt");
 
+const {  PostsModel } = models;
+
 // CREATE POST
 router.post('/create', validateJWT, async(req, res) => {
     const { game, content } = req.body.post;
