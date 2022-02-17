@@ -23,4 +23,28 @@ router.post("/add", validateJWT, async (req, res) => {
   }
 });
 
+// router.get('/:id', validateJWT, async (req, res) => {
+//   let { id } = req.params
+//   try {
+//     await models.FavGameModel.findAll({
+//       where: {
+//         id: id
+//       },
+//     })
+//     .then(
+//       favGames => {
+//         res.status(200).json({
+//           favGames: favGames
+//         });
+//       }
+//     )
+//   } catch(err) {
+//     res.status(500).json({
+//       error: err
+//     })
+//   }
+// })
+
+
+
 module.exports = router;
