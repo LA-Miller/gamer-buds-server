@@ -7,14 +7,25 @@ const bcrypt = require("bcryptjs");
 const res = require("express/lib/response");
 const validateJWT = require("../middleware/validate-jwt");
 const { FavGameModel } = models;
-const {  PostsModel } = models;
+const { PostsModel } = models;
 
-router.get('/favGames', validateJWT, async(req,res) => {
- const result= await User.findAll({
-    include: [FavGameModel]
-  })
-  res.status(200).json(result);
-})
+router.get("/favGames/:id", validateJWT, async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const result = await User.findAll({
+      where: {
+        id: id,
+      },
+      include: [FavGameModel],
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({
+      error: `Failed to retrieve user`,
+    });
+  }
+});
 
 // User register endpoint
 router.post("/register", async (req, res) => {
@@ -96,102 +107,96 @@ router.post("/login", async (req, res) => {
 });
 
 // UPDATING USER PROFILE
-router.put('/update/profile/:userId', validateJWT, async(req, res) => {
+router.put("/update/profile/:userId", validateJWT, async (req, res) => {
   const { username, discord, email, password } = req.body.user;
 
   const query = {
     where: {
-      id: req.user.id
-    }
-  }
+      id: req.user.id,
+    },
+  };
 
   const updateProfile = {
     username: username,
     discord: discord,
     email: email,
-    password: password
-  }
+    password: password,
+  };
 
   try {
     const update = await models.UserModel.update(updateProfile, query);
     res.status(200).json(update);
-  } catch(err) {
+  } catch (err) {
     res.status(500).json({ error: err });
   }
-})
+});
 
 // GETTING ALL THE USER INFO
-router.get('/userinfo', validateJWT, async(req, res) => {
+router.get("/userinfo", validateJWT, async (req, res) => {
   try {
     await models.UserModel.findAll({
       include: [
         {
           model: models.PostsModel,
-        }
-      ]
-    })
-    .then(
-      users => {
-        res.status(200).json({
-          users: users
-        });
-      }
-    )
-  } catch(err) {
+        },
+      ],
+    }).then((users) => {
+      res.status(200).json({
+        users: users,
+      });
+    });
+  } catch (err) {
     res.status(500).json({
-      error: `Failed to retrieve users: ${err}`
-    })
+      error: `Failed to retrieve users: ${err}`,
+    });
   }
-})
+});
 
 // GETTING A SINGLE USERS INFO BY ID
-router.get('/find/:id', validateJWT, async(req, res) => {
+router.get("/find/:id", validateJWT, async (req, res) => {
   let { id } = req.params;
   try {
     await models.UserModel.findAll({
       where: {
-        id: id
+        id: id,
       },
       include: [
         {
           model: models.PostsModel,
-        }
-      ]
-    })
-    .then(
-      user => {
-        res.status(200).json({
-          user: user
-        });
-      }
-    )
-  } catch(err) {
+        },
+      ],
+    }).then((user) => {
+      res.status(200).json({
+        user: user,
+      });
+    });
+  } catch (err) {
     res.status(500).json({
-      error: `Failed to retrieve user`
-    })
+      error: `Failed to retrieve user`,
+    });
   }
-})
+});
 
 //ADMIN DELETING A USER -- ALSO DELETES ALL OF THE USER'S POSTS
-router.delete('/:id', validateJWT, async(req, res) => {
+router.delete("/:id", validateJWT, async (req, res) => {
   const isAdmin = req.user.isAdmin;
   const userId = req.params.id;
 
-  if(isAdmin) {
+  if (isAdmin) {
     try {
       const query = {
         where: {
-          id: userId
+          id: userId,
         },
       };
       await models.UserModel.destroy(query);
       res.status(200).json({ message: "User removed" });
-    } catch(err) {
+    } catch (err) {
       res.status(500).json({ error: err });
     }
   } else {
     res.status(200).json({ message: "Not an Admin" });
   }
-})
+});
 
 module.exports = router;
